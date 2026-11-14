@@ -110,23 +110,26 @@ enum MenuIcon {
     }
 }
 
-/// Mascota grande del menú: frames renderizados en Blender (Resources/mascot/<estado>/NN.png).
+/// Mascota grande del menú: renderizada en Blender, una tira WebP de 24 frames por estado
+/// (Resources/mascot/<estado>.webp, 256 px por frame).
 enum Mascot: String {
     case trabajando, esperando, descansando
 
     private static var cache: [Mascot: [NSImage]] = [:]
+    static let frameCount = 24
 
     var frames: [NSImage] {
         if let cached = Mascot.cache[self] { return cached }
-        var list: [NSImage] = []
         let resources = ProcessInfo.processInfo.environment["WICK_RESOURCES"].map { URL(fileURLWithPath: $0) }
             ?? Bundle.main.resourceURL
-        guard let base = resources?.appendingPathComponent("mascot/\(rawValue)") else { return [] }
-        for i in 0..<60 {
-            let url = base.appendingPathComponent(String(format: "%02d.png", i))
-            guard let image = NSImage(contentsOf: url) else { break }
-            image.size = NSSize(width: 128, height: 128)
-            list.append(image)
+        guard let url = resources?.appendingPathComponent("mascot/\(rawValue).webp"),
+              let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+              let strip = CGImageSourceCreateImageAtIndex(source, 0, nil) else { return [] }
+        let side = strip.height
+        var list: [NSImage] = []
+        for i in 0..<min(Mascot.frameCount, strip.width / side) {
+            guard let frame = strip.cropping(to: CGRect(x: i * side, y: 0, width: side, height: side)) else { break }
+            list.append(NSImage(cgImage: frame, size: NSSize(width: 128, height: 128)))
         }
         Mascot.cache[self] = list
         return list

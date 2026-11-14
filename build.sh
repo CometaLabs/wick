@@ -13,8 +13,9 @@ cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 cp -R Resources/mascot "$APP/Contents/Resources/mascot"
 
 TMP="$(mktemp -d)"
-swiftc -O -target arm64-apple-macos13 Sources/*.swift -o "$TMP/arm64"
-swiftc -O -target x86_64-apple-macos13 Sources/*.swift -o "$TMP/x86_64"
+swiftc -Osize -target arm64-apple-macos13 Sources/*.swift -o "$TMP/arm64"
+swiftc -Osize -target x86_64-apple-macos13 Sources/*.swift -o "$TMP/x86_64"
+strip -x "$TMP/arm64" "$TMP/x86_64"
 lipo -create "$TMP/arm64" "$TMP/x86_64" -output "$APP/Contents/MacOS/Wick"
 rm -rf "$TMP"
 
