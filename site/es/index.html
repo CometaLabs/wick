@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wick · Tu Mac despierto mientras trabajan tus agentes de IA</title>
+<meta name="description" content="Wick es una app gratuita y open source para la barra de menú de macOS que mantiene el Mac despierto mientras Claude Code, Codex, Gemini CLI y otros agentes de IA trabajan, y lo deja dormir cuando terminan.">
+<link rel="canonical" href="https://wick.cometalabs.io/es/">
+<link rel="alternate" hreflang="en" href="https://wick.cometalabs.io/">
+<link rel="alternate" hreflang="es" href="https://wick.cometalabs.io/es/">
+<link rel="alternate" hreflang="x-default" href="https://wick.cometalabs.io/">
+<meta name="theme-color" content="#efe7da">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/Roobert-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/wick-working.webp" as="image" fetchpriority="high">
+<link rel="stylesheet" href="/assets/site.css?v=4">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Wick by Cometa Labs">
+<meta property="og:title" content="Wick · Tu Mac despierto mientras trabajan tus agentes de IA">
+<meta property="og:description" content="Una velita de plastilina en tu barra de menú. Se enciende cuando tu agente se pone a trabajar y deja dormir al Mac cuando termina. Gratis y open source.">
+<meta property="og:url" content="https://wick.cometalabs.io/es/">
+<meta property="og:image" content="https://wick.cometalabs.io/og.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@CometaLabs">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://wick.cometalabs.io/#app",
+      "name": "Wick",
+      "alternateName": "Wick for macOS",
+      "description": "App gratuita y open source para la barra de menú de macOS que mantiene el Mac despierto mientras los agentes de IA para programar (Claude Code, Codex, Gemini CLI, Cursor Agent, Aider y otros) trabajan, y lo deja dormir cuando terminan o te esperan.",
+      "url": "https://wick.cometalabs.io/es/",
+      "image": "https://wick.cometalabs.io/assets/wick-icon-512.png",
+      "screenshot": "https://wick.cometalabs.io/og.png",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "macOS 13 o posterior",
+      "softwareVersion": "1.0.0",
+      "license": "https://opensource.org/licenses/MIT",
+      "isAccessibleForFree": true,
+      "downloadUrl": "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip",
+      "codeRepository": "https://github.com/CometaLabs/wick",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+      "inLanguage": ["en", "es"],
+      "author": { "@id": "https://cometalabs.io/#organization" },
+      "publisher": { "@id": "https://cometalabs.io/#organization" }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://cometalabs.io/#organization",
+      "name": "Cometa Labs",
+      "url": "https://cometalabs.io",
+      "description": "Estudio de producto digital en Palma de Mallorca. Apps, webs y productos de IA para startups y empresas.",
+      "logo": "https://cometalabs.io/images/brand/cometio.png",
+      "email": "hola@cometalabs.io",
+      "address": { "@type": "PostalAddress", "addressLocality": "Palma", "addressRegion": "Illes Balears", "addressCountry": "ES" },
+      "sameAs": ["https://github.com/CometaLabs", "https://www.linkedin.com/company/cometa-labs/", "https://x.com/CometaLabs"]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "¿Wick solo funciona con Claude Code?", "acceptedAnswer": { "@type": "Answer", "text": "No. A Claude Code lo sigue con hooks, que es lo más preciso. Codex, Gemini CLI, Cursor Agent, OpenCode, Aider, Amp, Goose y otros agentes de terminal se detectan por su proceso: si el agente o lo que lanza gasta CPU, Wick lo da por trabajando." } },
+        { "@type": "Question", "name": "¿Por qué macOS me avisa al abrir Wick?", "acceptedAnswer": { "@type": "Answer", "text": "Wick todavía no está firmada con un Developer ID de Apple. Ábrela una vez, ve a Ajustes del Sistema → Privacidad y seguridad y pulsa Abrir igualmente, o ejecuta xattr -dr com.apple.quarantine /Applications/Wick.app." } },
+        { "@type": "Question", "name": "¿Puede Wick mantener el Mac despierto con la tapa cerrada?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, si lo activas. Pide tu contraseña de administrador una vez y desactiva el reposo al cerrar la tapa solo mientras un agente trabaja. El reposo normal vuelve cuando el agente termina, al salir de Wick, si se cuelga o con la batería por debajo del 15 %." } },
+        { "@type": "Question", "name": "¿Wick recoge algún dato?", "acceptedAnswer": { "@type": "Answer", "text": "No. Wick no se conecta a internet, no tiene analíticas ni cuenta. El estado de las sesiones se queda en ~/.wick, en tu Mac." } },
+        { "@type": "Question", "name": "¿Wick es gratis?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Wick es gratis y open source con licencia MIT, hecha por Cometa Labs." } }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Ir al contenido</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/es/" aria-label="Wick, inicio"><img src="/apple-touch-icon.png" alt="" width="34" height="34">Wick</a>
+    <ul>
+      <li><a href="#how">Cómo funciona</a></li>
+      <li><a href="#agents">Agentes</a></li>
+      <li><a href="#install">Instalar</a></li>
+      <li><a href="#faq">Preguntas</a></li>
+      <li><a href="https://github.com/CometaLabs/wick">GitHub</a></li>
+    </ul>
+    <div class="right">
+      <a class="lang" href="/" hreflang="en" lang="en">English</a>
+      <a class="btn primary small" href="https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip">Descargar</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="title">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Para Claude Code, Codex, Gemini CLI y compañía</p>
+        <h1 id="title">Tus agentes trabajan.<br>Tu Mac <em>no se duerme.</em></h1>
+        <p class="lead">Wick es una velita de plastilina que vive en tu barra de menú. Se enciende cuando tu agente de IA empieza una tarea larga, evita que el Mac se duerma a mitad y se apaga sola cuando termina.</p>
+        <div class="actions">
+          <a class="btn primary" href="https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.5 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9s-2-.9-3.3-.9C6.1 7 4.5 8 3.6 9.6c-1.8 3.2-.5 7.8 1.3 10.4.9 1.3 1.9 2.7 3.2 2.6 1.3 0 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.2-1.3 3.1-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1.1-2.8-4.4zM14 5.1c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg>
+            Descargar para macOS
+          </a>
+          <a class="btn ghost" href="https://github.com/CometaLabs/wick">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>
+            Ver el código
+          </a>
+        </div>
+        <p class="meta"><span>Gratis y open source (MIT)</span><span>macOS 13+</span><span>3 MB</span></p>
+      </div>
+
+      <div class="stage" data-demo data-state="working" aria-label="Demo en vivo del menú de Wick">
+        <div class="glow" aria-hidden="true"></div>
+        <div class="menubar" aria-hidden="true">
+          <span>Wi‑Fi</span>
+          <span class="tray">
+            <svg data-icon data-mood="working" viewBox="0 0 18 18"><g transform="translate(0 18) scale(1 -1)"><rect x="4.5" y="1.5" width="9" height="9.2" rx="2.6" fill="#222"/><rect x="8.55" y="10.2" width=".9" height="1.9" rx=".45" fill="#222"/><path class="flame" d="M10.85 13.6a1.85 1.85 0 0 1-3.7 0C7.15 14.7 8.5 16 9 18c.5-2 1.85-3.3 1.85-4.4z" transform="translate(0 0)"/><circle cx="7.1" cy="6.15" r="1" fill="#fff"/><circle cx="10.9" cy="6.15" r="1" fill="#fff"/></g></svg>
+          </span>
+          <span>vie 10:42</span>
+        </div>
+        <div class="mac-menu" role="img" aria-label="Menú de Wick: la vela muestra si tus agentes trabajan, te esperan o descansan">
+          <div class="head">
+            <div class="sprite working"></div>
+            <div><b data-title>Trabajando</b><p data-sub>Claude Code trabaja en wick. El Mac no se dormirá.</p></div>
+          </div>
+          <hr>
+          <div class="label">Agentes</div>
+          <div data-rows></div>
+          <hr>
+          <div class="opt on">Claude Code (hooks)</div>
+          <div class="opt on">Otros agentes (Codex, Gemini, Cursor…)</div>
+          <div class="opt">También con la tapa cerrada</div>
+        </div>
+        <div class="sprite working" role="img" aria-label="Wick, una velita de plastilina con cara, con la llama encendida"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="tint" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title">Sigue a tu agente, no a un temporizador.</h2>
+      <p class="intro">Si el Mac se duerme a mitad de una tarea larga, el agente se para. Con las apps de siempre eliges «2 horas» y esperas haber acertado. Wick mira lo que tus agentes hacen de verdad.</p>
+      <div class="moods">
+        <article class="mood">
+          <div class="sprite working" role="img" aria-label="Wick trabajando: llama encendida, dando saltitos"></div>
+          <h3>Trabajando</h3>
+          <p>Un agente empieza una tarea, se enciende la llama y el Mac no se duerme. ¿Varias sesiones a la vez? Las sigue todas.</p>
+        </article>
+        <article class="mood">
+          <div class="sprite waiting" role="img" aria-label="Wick esperando: llama pequeña, mirando a un lado"></div>
+          <h3>Te está esperando</h3>
+          <p>El agente necesita tu OK. La velita de la barra se pone naranja para que lo veas, y el Mac puede descansar hasta que respondas.</p>
+        </article>
+        <article class="mood">
+          <div class="sprite resting" role="img" aria-label="Wick descansando: llama apagada, ojos cerrados"></div>
+          <h3>Descansando</h3>
+          <p>El trabajo está hecho. Wick espera dos minutos por si el agente sigue y luego deja dormir al Mac como siempre.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="agents" aria-labelledby="agents-title">
+    <div class="wrap agents">
+      <div>
+        <h2 id="agents-title">Funciona con los agentes que ya usas.</h2>
+        <p class="intro">A Claude Code lo sigue con hooks, así que sabe exactamente cuándo trabaja, cuándo te necesita y cuándo termina. Los demás agentes de terminal los detecta por su proceso: si ellos o lo que lanzan están ocupados, están trabajando.</p>
+        <ul class="agent-list">
+          <li class="star">Claude Code</li><li>Codex</li><li>Gemini CLI</li><li>Cursor Agent</li><li>OpenCode</li><li>Aider</li><li>Amp</li><li>Goose</li><li>Qwen Code</li><li>Copilot CLI</li><li>Crush</li><li>Factory Droid</li>
+        </ul>
+        <p class="note">¿Usas otra cosa? El modo manual mantiene el Mac despierto 15 minutos, unas horas o hasta que lo pares.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Temporizador clásico</th><th>Wick</th></tr></thead>
+          <tbody>
+            <tr><td>Se enciende</td><td>Cuando eliges una duración</td><td class="win">Sola, cuando un agente empieza</td></tr>
+            <tr><td>Se apaga</td><td>Cuando acaba el tiempo</td><td class="win">2 min después de que el agente termine</td></tr>
+            <tr><td>El agente te pide permiso</td><td>Sigue gastando batería</td><td class="win">Deja descansar al Mac</td></tr>
+            <tr><td>Varias sesiones</td><td>No las ve</td><td class="win">Las lista por proyecto</td></tr>
+            <tr><td>Tapa cerrada</td><td>Todo el rato</td><td class="win">Solo mientras trabaja</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="tint" aria-labelledby="details-title">
+    <div class="wrap">
+      <h2 id="details-title">Pequeña, cuidada y tuya.</h2>
+      <p class="intro">Para quien deja a sus agentes trabajando y se va a por un café.</p>
+      <div class="features">
+        <div><span class="k">Tapa cerrada</span><h3>Ciérralo y llévatelo</h3><p>Opcional. Una contraseña y el reposo al cerrar la tapa se desactiva solo mientras un agente trabaja. Siempre vuelve al terminar, al salir, si la app se cuelga o con la batería por debajo del 15 %.</p></div>
+        <div><span class="k">Reinicios</span><h3>Se arregla sola</h3><p>Si el Mac se apagó con el modo tapa activo, macOS seguiría ignorando la tapa. Wick lo detecta y lo deja como estaba.</p></div>
+        <div><span class="k">Privacidad</span><h3>Nada sale de tu Mac</h3><p>Sin red, sin analíticas, sin cuenta. Usa las mismas aserciones de energía que <code>caffeinate</code>.</p></div>
+        <div><span class="k">Varias sesiones</span><h3>Todos tus agentes a la vista</h3><p>El menú lista cada agente con su proyecto y cuánto lleva. Haz clic en uno para abrir su carpeta.</p></div>
+        <div><span class="k">Idiomas</span><h3>Castellano e inglés</h3><p>Según el idioma de tu Mac.</p></div>
+        <div><span class="k">Open source</span><h3>Lee cada línea</h3><p>Licencia MIT. Swift, sin dependencias, compila con un solo script. Haz un fork, cámbiala, manda un pull request.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" aria-labelledby="install-title">
+    <div class="wrap install">
+      <div>
+        <h2 id="install-title">Se instala en un minuto.</h2>
+        <ol class="steps">
+          <li><a href="https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip">Descarga Wick.zip</a>, descomprímela y arrastra <b>Wick.app</b> a Aplicaciones.</li>
+          <li>Ábrela. Todavía no está firmada con un Developer ID de Apple, así que macOS avisa la primera vez: ve a <b>Ajustes del Sistema → Privacidad y seguridad</b> y pulsa <b>Abrir igualmente</b>.</li>
+          <li>Si usas Claude Code, Wick te ofrece añadir sus hooks para seguirlo al detalle. Antes guarda una copia de <code>~/.claude/settings.json</code> y puedes quitarlos desde el menú.</li>
+        </ol>
+        <p>¿Prefieres la terminal?</p>
+        <pre><code>xattr -dr com.apple.quarantine /Applications/Wick.app</code></pre>
+      </div>
+      <ol class="flow" aria-label="Cómo funciona Wick"><li><span>Tu agente trabaja</span><b>El Mac no se duerme</b></li><li><span>Te pide permiso</span><b>Vela naranja · el Mac puede descansar</b></li><li><span>Ha terminado</span><b>2 minutos más y el Mac duerme como siempre</b></li><li><span>Modo tapa activado</span><b>La tapa solo se mantiene mientras trabaja</b></li></ol>
+    </div>
+  </section>
+
+  <section id="faq" class="tint faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <h2 id="faq-title">Preguntas</h2>
+      <details><summary>¿Solo funciona con Claude Code?</summary><p>No. A Claude Code lo sigue con hooks, que es lo más preciso. Codex, Gemini CLI, Cursor Agent, OpenCode, Aider, Amp, Goose y otros agentes de terminal se detectan por su proceso: si el agente o lo que lanza gasta CPU, Wick lo da por trabajando.</p></details>
+      <details><summary>¿Por qué macOS me avisa al abrirla?</summary><p>Todavía no está firmada con un Developer ID de Apple. Ábrela una vez, ve a Ajustes del Sistema → Privacidad y seguridad y pulsa Abrir igualmente. O ejecuta <code>xattr -dr com.apple.quarantine /Applications/Wick.app</code>.</p></details>
+      <details><summary>¿Por qué me pide la contraseña?</summary><p>Solo para el modo tapa cerrada. macOS no deja que una app normal evite el reposo al cerrar la tapa, así que Wick arranca un pequeño ayudante con permisos de administrador que lo enciende y apaga con tu agente. Para nada más.</p></details>
+      <details><summary>¿Es seguro el modo tapa cerrada?</summary><p>Wick devuelve el reposo normal cuando el agente termina, al salir, si la app se cuelga y con la batería por debajo del 15 %. Deja el Mac donde pueda respirar: un portátil cerrado dentro de una mochila se calienta.</p></details>
+      <details><summary>¿Qué cambia en mi configuración de Claude Code?</summary><p>Añade unos hooks a <code>~/.claude/settings.json</code> que llaman a <code>~/.wick/hook</code>. El hook guarda el estado de la sesión y sale en milisegundos; nunca bloquea a Claude Code ni cambia lo que hace. Tus otros hooks no se tocan, y al desactivar la opción se quitan los de Wick.</p></details>
+      <details><summary>¿Recoge algún dato?</summary><p>No. Sin red, sin analíticas, sin cuenta. El estado de las sesiones vive en <code>~/.wick</code>, en tu Mac.</p></details>
+      <details><summary>¿Es gratis?</summary><p>Sí, gratis y open source con licencia MIT. Parte de Caffeinator, de Jon Kraayen, y la hace Cometa Labs.</p></details>
+    </div>
+  </section>
+
+  <section aria-labelledby="studio-title">
+    <div class="wrap">
+      <div class="studio">
+        <div>
+          <p class="eyebrow" style="color:#e4a77c">Hecha por Cometa Labs</p>
+          <h2 id="studio-title">Hacemos producto con agentes cada día.</h2>
+          <p>Cometa Labs es un estudio de producto digital en Palma de Mallorca. Diseñamos y desarrollamos apps, webs y productos de IA para startups y empresas, y hacemos pequeñas herramientas como Wick cuando las necesitamos nosotros.</p>
+          <div class="actions">
+            <a class="btn primary" href="https://cometalabs.io/?utm_source=wick&amp;utm_medium=site&amp;utm_campaign=wick">Trabaja con nosotros</a>
+            <a class="btn ghost" href="https://github.com/CometaLabs">Más open source</a>
+          </div>
+        </div>
+        <ul>
+          <li><a href="https://cometalabs.io/?utm_source=wick&amp;utm_medium=site&amp;utm_campaign=wick">Productos de IA y agentes</a><span>Estudio</span></li>
+          <li><a href="https://klipp.cometalabs.io/?utm_source=wick&amp;utm_medium=site&amp;utm_campaign=wick">Klipp</a><span>Grabador de pantalla</span></li>
+          <li><a href="https://github.com/CometaLabs/wick">Wick</a><span>Estás aquí</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="wrap">
+      <div class="sprite resting" role="img" aria-label="Wick descansando"></div>
+      <h2 id="cta-title">Que tus agentes trabajen toda la noche.</h2>
+      <p class="intro" style="margin:0 auto 28px">Gratis, open source, 3 MB.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip">Descargar para macOS</a>
+        <a class="btn ghost" href="https://github.com/CometaLabs/wick">Dale una estrella</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 <a href="https://cometalabs.io/?utm_source=wick&amp;utm_medium=footer">Cometa Labs</a> · Palma de Mallorca · Licencia MIT</span>
+    <nav aria-label="Pie">
+      <a href="https://github.com/CometaLabs/wick">GitHub</a>
+      <a href="https://github.com/CometaLabs/wick/releases">Versiones</a>
+      <a href="/llms.txt">llms.txt</a>
+      <a href="/" hreflang="en" lang="en">English</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="application/json" id="demo-data">
+[
+  { "mood": "working", "title": "Trabajando", "sub": "Claude Code trabaja en wick. El Mac no se dormirá.",
+    "rows": [["working", "wick", "Claude Code · trabajando · 4 min"], ["working", "api", "Codex · trabajando · 1 min"], ["idle", "landing", "Gemini CLI · en pausa · 12 min"]] },
+  { "mood": "waiting", "title": "Te está esperando", "sub": "En wick. Mientras, el Mac puede dormir.",
+    "rows": [["waiting", "wick", "Claude Code · te espera · ahora"], ["working", "api", "Codex · trabajando · 3 min"], ["idle", "landing", "Gemini CLI · en pausa · 14 min"]] },
+  { "mood": "resting", "title": "Descansando", "sub": "Me enciendo sola cuando tu agente se pone a trabajar.",
+    "rows": [["idle", "wick", "Claude Code · terminado · 2 min"], ["idle", "api", "Codex · en pausa · 1 min"]] }
+]
+</script>
+<script src="/assets/site.js?v=4" defer></script>
+</body>
+</html>

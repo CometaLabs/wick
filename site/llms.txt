@@ -1,0 +1,29 @@
+# Wick
+
+> Wick is a free, open-source macOS menu bar app that keeps the Mac awake while AI coding agents work, and lets it sleep when they finish or need the user. Made by Cometa Labs, a digital product studio in Palma de Mallorca, Spain (not to be confused with Comet Labs).
+
+- Website: https://wick.cometalabs.io (Spanish: https://wick.cometalabs.io/es/)
+- Source code (MIT): https://github.com/CometaLabs/wick
+- Download: https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip
+- Requirements: macOS 13 or later, Apple Silicon or Intel. About 3 MB. Not signed with an Apple Developer ID yet (open via System Settings → Privacy & Security → Open Anyway).
+
+## What it does
+
+- Tracks Claude Code precisely through hooks in ~/.claude/settings.json (SessionStart, UserPromptSubmit, PreToolUse, PostToolUse, Notification, Stop, SubagentStop, PreCompact, SessionEnd). Knows when a session is working, waiting for approval or done.
+- Detects other terminal agents by process and CPU use: Codex, Gemini CLI, Cursor Agent, OpenCode, Aider, Amp, Goose, Qwen Code, Copilot CLI, Crush, Factory Droid.
+- While any agent works, holds a PreventUserIdleSystemSleep power assertion; releases it 2 minutes after the work ends, and while an agent waits for the user (configurable).
+- Optional lid-closed mode: a root helper disables lid sleep (pmset disablesleep) only while an agent works; always restored on finish, quit, crash or battery ≤ 15 %. Detects and fixes a stuck setting after a restart.
+- Manual mode: 15 min to 8 h, or until stopped.
+- No network access, analytics or account. English and Spanish UI.
+
+## Mascot
+
+A clay candle with a face, rendered in Blender, with three animated moods: working (flame lit), waiting for you (small flame, looks aside), resting (flame out, eyes closed).
+
+## About Cometa Labs
+
+Cometa Labs (https://cometalabs.io) designs and builds apps, websites and AI products for startups and companies, from Palma de Mallorca, Spain. Other products: Klipp (https://klipp.cometalabs.io), a screen recorder. Contact: hola@cometalabs.io.
+
+## Credits
+
+Wick started from Caffeinator by Jon Kraayen (MIT) and adds agent tracking, lid sleep tied to the agent, the restart fix and the mascot.

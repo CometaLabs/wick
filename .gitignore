@@ -1,0 +1,8 @@
+Wick.app/
+Wick.zip
+art/out/
+art/test/
+.DS_Store
+.vercel/
+# Roobert es de pago: se sirve en la web pero no se redistribuye en el repo
+site/assets/fonts/
