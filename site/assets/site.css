@@ -3,13 +3,13 @@
 @font-face { font-family: "Roobert"; src: url("fonts/Roobert-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
 
 :root {
-  --paper: #efe7da;
-  --paper-2: #e8dece;
-  --card: #f7f2e9;
+  --paper: #f7f3ec;
+  --paper-2: #efe8dc;
+  --card: #fbf8f3;
   --ink: #211c18;
   --ink-2: #4b4139;
   --muted: #7d6e60;
-  --line: #dacdba;
+  --line: #e3d8c8;
   --clay: #c8794c;
   --clay-dark: #9c5634;
   --flame: #ff8a1e;
@@ -85,11 +85,17 @@ h1 em { font-style: normal; color: var(--clay); }
 .mono { font: 400 13px/1.5 var(--mono); color: var(--muted); letter-spacing: .01em; margin: 0; }
 
 /* escena: barra de menú + terminal + menú de Wick */
-.scene { position: relative; margin: 56px auto 0; height: 560px; max-width: 1080px; border-radius: 28px; background:
-  radial-gradient(60% 70% at 72% 30%, rgba(255,170,90,.32), transparent 70%),
-  linear-gradient(180deg, #ecdfcb, #e0cfb6); border: 1px solid #d3c2a8; overflow: hidden;
-  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 40px 80px -40px rgba(90,60,30,.45); transition: background .8s; }
-.scene[data-state="resting"] { background: radial-gradient(60% 70% at 72% 30%, rgba(170,160,200,.18), transparent 70%), linear-gradient(180deg, #e6ddd0, #d8ccbb); }
+.scene { position: relative; margin: 56px auto 0; height: 560px; max-width: 1080px; border-radius: 28px; overflow: hidden;
+  background-color: #f1ece4;
+  background-image: radial-gradient(circle, rgba(120,95,70,.16) 1px, transparent 1.2px);
+  background-size: 22px 22px; background-position: 11px 11px;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 0 #fff inset, 0 2px 4px rgba(60,40,20,.04), 0 40px 80px -48px rgba(60,40,20,.35); }
+/* brillo cálido solo detrás de la llama de la velita */
+.scene::before { content: ""; position: absolute; width: 520px; height: 520px; left: calc(50% + 130px); bottom: -120px; transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255,166,77,.30), rgba(255,166,77,.08) 60%, transparent); transition: opacity .8s; pointer-events: none; }
+.scene[data-state="waiting"]::before { opacity: .55; }
+.scene[data-state="resting"]::before { opacity: 0; }
 .menubar { position: absolute; inset: 0 0 auto 0; height: 32px; display: flex; align-items: center; gap: 18px; padding: 0 18px; background: rgba(255,255,255,.45); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); font: 500 13px/1 var(--sys); color: #1d1d1f; }
 .menubar .apple svg { width: 15px; height: 15px; display: block; }
 .menubar .dim-item { font-weight: 400; }
@@ -147,9 +153,10 @@ h1 em { font-style: normal; color: var(--clay); }
 .marquee-wrap { padding: 72px 0 24px; }
 .marquee-wrap .mono { margin-bottom: 22px; text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
 .marquee { display: flex; overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
-.marquee ul { display: flex; gap: 14px; padding: 0 7px; margin: 0; list-style: none; flex: none; animation: marquee 38s linear infinite; }
-.marquee li { padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; background: var(--card); font-size: 16px; white-space: nowrap; }
-.marquee li:first-child { background: #fff1e2; border-color: #f3c8a0; color: var(--clay-dark); }
+.marquee ul { display: flex; gap: 12px; padding: 0 7px; margin: 0; list-style: none; flex: none; animation: marquee 38s linear infinite; }
+.marquee li { display: flex; align-items: center; gap: 10px; padding: 10px 18px 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: #fff; font-size: 16px; font-weight: 500; white-space: nowrap; color: var(--ink); box-shadow: 0 1px 2px rgba(60,40,20,.04); }
+.marquee li svg { width: 22px; height: 22px; flex: none; }
+.marquee .initial { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; background: var(--ink); color: #fff; font: 600 12px/1 var(--sans); }
 @keyframes marquee { to { transform: translateX(-100%); } }
 
 /* ---------- secciones ---------- */
@@ -161,15 +168,15 @@ h2 { font-weight: 600; font-size: clamp(34px, 4.4vw, 54px); line-height: 1.02; l
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px 26px; }
 .card h3 { margin: 0 0 6px; font-size: 20px; font-weight: 600; letter-spacing: -0.015em; }
 .card p { margin: 0; color: var(--ink-2); font-size: 16px; }
-.mini { border-radius: 14px; background: var(--paper); border: 1px solid var(--line); margin-bottom: 22px; min-height: 168px; position: relative; overflow: hidden; }
+.mini { border-radius: 14px; background: #f3eee6; border: 1px solid var(--line); margin-bottom: 22px; min-height: 168px; position: relative; overflow: hidden; }
 
 .steps3 { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .steps3 .num { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: var(--ink); color: var(--paper); font: 500 13px/1 var(--mono); margin-bottom: 12px; }
 .mini-term { background: #fbf8f3; padding: 22px 18px; font: 12.5px/1.8 var(--mono); color: #2b2520; }
 .mini-term .dim { color: #9a8b7d; } .mini-term .accent { color: var(--clay-dark); font-weight: 500; }
 .mini-term div { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mini-wick { display: flex; align-items: center; justify-content: center; gap: 6px; background: radial-gradient(closest-side, rgba(255,170,90,.25), transparent), var(--paper); }
-.mini-wick.off { background: var(--paper); }
+.mini-wick { display: flex; align-items: center; justify-content: center; gap: 6px; background: radial-gradient(closest-side, rgba(255,170,90,.22), transparent), #f3eee6; }
+.mini-wick.off { background: #f3eee6; }
 .mini-wick .sprite { --s: 160px; }
 .chip { font: 500 12px/1 var(--mono); padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--card); color: var(--ink-2); white-space: nowrap; }
 .chip.on { background: #fff1e2; border-color: #f3c8a0; color: var(--clay-dark); }

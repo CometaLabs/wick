@@ -3,12 +3,24 @@
 import json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V = "8"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
+V = "9"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
 DOMAIN = "https://wick.cometalabs.io"
 ZIP = "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip"
 REPO = "https://github.com/CometaLabs/wick"
-AGENTS = ["Claude Code", "Codex", "Gemini CLI", "Cursor Agent", "OpenCode", "Aider", "Amp", "Goose",
-          "Qwen Code", "Copilot CLI", "Crush", "Factory Droid"]
+# (nombre, logo en art/logos o None → inicial). Logos monocromos de simple-icons y lobe-icons.
+AGENTS = [("Claude Code", "claude"), ("Codex", "codex"), ("Gemini CLI", "gemini"), ("Cursor Agent", "cursor"),
+          ("Copilot CLI", "copilot"), ("Qwen Code", "qwen"), ("Goose", "goose"), ("OpenCode", None), ("Aider", None),
+          ("Amp", None), ("Crush", None), ("Factory Droid", None)]
+LOGOS = os.path.join(os.path.dirname(HERE), "art", "logos")
+
+
+def agent_badge(name, logo):
+    if logo:
+        with open(os.path.join(LOGOS, logo + ".svg")) as f:
+            mark = f.read()
+    else:
+        mark = f'<span class="initial" aria-hidden="true">{name[0]}</span>'
+    return f'<li>{mark}<span>{name}</span></li>'
 
 APPLE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.5 2-3.6 2.1-3.7-1.2-1.7-3-1.9-3.6-2-1.5-.2-3 .9-3.8.9s-2-.9-3.3-.9C6.1 7 4.5 8 3.6 9.6c-1.8 3.2-.5 7.8 1.3 10.4.9 1.3 1.9 2.7 3.2 2.6 1.3 0 1.8-.8 3.3-.8s2 .8 3.3.8c1.4 0 2.2-1.3 3.1-2.6 1-1.5 1.4-2.9 1.4-3-.1 0-2.8-1.1-2.8-4.4zM14 5.1c.7-.9 1.2-2 1.1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.1.1 2.3-.6 3-1.5z"/></svg>'
 GITHUB = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>'
@@ -100,7 +112,7 @@ T = {
   clock="vie 10:42", agents_label="Agentes", opt_hooks="Claude Code (hooks)", opt_others="Otros agentes (Codex, Gemini…)", opt_lid="También con la tapa cerrada",
   works_with="Funciona con los agentes que ya usas",
   how_title="Sigue a tu agente, no a un temporizador.",
-  how_intro="Si el Mac se duerme a mitad de una tarea larga, el agente se para. Con las apps de siempre eliges «2 horas» y esperas haber acertado. Wick mira lo que tus agentes hacen de verdad.",
+  how_intro="Si el Mac se duerme a mitad de una tarea larga, el agente se para. Con las apps de siempre eliges 2 horas y esperas haber acertado. Wick mira lo que tus agentes hacen de verdad.",
   s1_t="Tu agente empieza", s1_p="Claude Code avisa a Wick con hooks. A Codex, Gemini CLI y los demás los reconoce por su proceso.",
   s2_t="Wick se enciende", s2_p="Se enciende la llama y macOS no se duerme mientras hay trabajo de verdad.", s2_chip="Mac despierto",
   s3_t="Termina y el Mac descansa", s3_p="Dos minutos más por si el agente sigue, y luego el Mac duerme como siempre.", s3_chip="Duerme en",
@@ -181,7 +193,7 @@ def ld(t):
 def page(t):
     d0 = t["demo"][0]
     term0 = "".join(f'<div class="{c}">{esc(x)}</div>' for c, x in d0["term"])
-    marquee = "".join(f"<li>{a}</li>" for a in AGENTS)
+    marquee = "".join(agent_badge(n, l) for n, l in AGENTS)
     faq = "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in t["faq"])
     cmp = "".join(f'<tr><th scope="row">{a}</th><td>{b}</td><td class="win">{c}</td></tr>' for a, b, c in t["cmp_rows"])
     steps = "".join(f"<li>{s}</li>" for s in t["inst_steps"])
@@ -202,7 +214,7 @@ def page(t):
 <meta name="description" content="{t['desc']}">
 <link rel="canonical" href="{DOMAIN}{t['path']}">
 {hreflang}
-<meta name="theme-color" content="#efe7da">
+<meta name="theme-color" content="#f7f3ec">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/Roobert-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
