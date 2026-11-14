@@ -3,7 +3,7 @@
 import json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V = "12"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
+V = "14"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
 DOMAIN = "https://wick.cometalabs.io"
 ZIP = "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip"
 REPO = "https://github.com/CometaLabs/wick"
@@ -45,19 +45,19 @@ T = {
   pb_with_state="Done", pb_with_note="Wick keeps the Mac awake while the agent works. When you come back, it's finished.",
   pb_sleep="Mac asleep",
   how_title="How it works", how_intro="Here's what Wick does on a normal afternoon. You don't touch anything.",
-  tl=[("10:00", "working", "You give your agent a task", "The candle lights up. Your Mac won't sleep."),
-      ("10:18", "waiting", "It asks for your OK", "The candle turns orange so you notice. Meanwhile the Mac can rest."),
-      ("10:20", "working", "You say yes", "Back to work, and the Mac stays awake."),
-      ("10:41", "grace", "It finishes", "Wick waits 2 more minutes, in case it carries on."),
-      ("10:43", "sleep", "Nothing left to do", "The candle goes out. Your Mac sleeps as usual.")],
-  tl_mac="Mac", tl_states={"working": "awake", "waiting": "can rest", "grace": "awake", "sleep": "asleep"},
+  tl=[("10:00", "working", "You give it a task", "working", "awake"),
+      ("10:18", "waiting", "It asks for your OK", "needs you", "can sleep"),
+      ("10:20", "working", "You say yes", "working", "awake"),
+      ("10:41", "grace", "It finishes", "done", "2 more min"),
+      ("10:43", "sleep", "All quiet", "resting", "asleep")],
+  tl_agent="Agent", tl_mac="Mac",
   how_note="With Claude Code, Wick knows exactly when it's working and when it needs you. With Codex, Gemini, Cursor and the rest, it notices from their activity.",
   feat_title="Small, and does what it says",
   feats=[("agents", "Works with your agents", "Claude Code, Codex, Gemini CLI, Cursor Agent, Copilot CLI, Aider and more. Several at once, too."),
          ("needs", "Tells you when it needs you", "If an agent is waiting for your answer, the candle in the menu bar turns orange."),
          ("lid", "Even with the lid closed", "Optional. Close your laptop and the agent keeps working. When it's done, the Mac sleeps normally again."),
          ("private", "Free and private", "No account, no internet, no tracking. Open source, so anyone can read the code.")],
-  feat_lid_toggle="Also with the lid closed", priv_badges=["MIT", "No account", "Offline"],
+  needs_chip="needs you", feat_lid_toggle="Also with the lid closed", priv_badges=["MIT", "No account", "Offline"],
   inst_title="Start in one minute",
   inst_steps=[("Download", f'<a href="{ZIP}">Wick.zip</a>, unzip it and drag Wick into Applications.'),
               ("Open it", "The first time, macOS asks you to confirm: <b>System Settings → Privacy &amp; Security → Open Anyway</b>."),
@@ -106,19 +106,19 @@ T = {
   pb_with_state="Terminado", pb_with_note="Wick mantiene el Mac despierto mientras el agente trabaja. Cuando vuelves, está hecho.",
   pb_sleep="Mac dormido",
   how_title="Cómo funciona", how_intro="Esto es lo que hace Wick en una tarde cualquiera. Tú no tocas nada.",
-  tl=[("10:00", "working", "Le das una tarea a tu agente", "La velita se enciende. El Mac no se duerme."),
-      ("10:18", "waiting", "Te pide el OK", "La velita se pone naranja para que lo veas. Mientras, el Mac puede descansar."),
-      ("10:20", "working", "Le dices que sí", "Vuelve al trabajo y el Mac sigue despierto."),
-      ("10:41", "grace", "Termina", "Wick espera 2 minutos más, por si sigue."),
-      ("10:43", "sleep", "Ya no queda nada", "La velita se apaga. El Mac duerme como siempre.")],
-  tl_mac="Mac", tl_states={"working": "despierto", "waiting": "descansa", "grace": "despierto", "sleep": "dormido"},
+  tl=[("10:00", "working", "Le das una tarea", "trabajando", "despierto"),
+      ("10:18", "waiting", "Te pide el OK", "te espera", "puede dormir"),
+      ("10:20", "working", "Le dices que sí", "trabajando", "despierto"),
+      ("10:41", "grace", "Termina", "terminado", "2 min más"),
+      ("10:43", "sleep", "Todo tranquilo", "en reposo", "dormido")],
+  tl_agent="Agente", tl_mac="Mac",
   how_note="Con Claude Code, Wick sabe exactamente cuándo trabaja y cuándo te necesita. Con Codex, Gemini, Cursor y los demás, lo nota por su actividad.",
   feat_title="Pequeña, y hace lo que dice",
   feats=[("agents", "Funciona con tus agentes", "Claude Code, Codex, Gemini CLI, Cursor Agent, Copilot CLI, Aider y más. También varios a la vez."),
          ("needs", "Te avisa cuando te necesita", "Si un agente espera tu respuesta, la velita de la barra de menú se pone naranja."),
          ("lid", "Incluso con la tapa cerrada", "Opcional. Cierra el portátil y el agente sigue trabajando. Al terminar, el Mac vuelve a dormir con normalidad."),
          ("private", "Gratis y privada", "Sin cuenta, sin internet, sin rastreo. Open source: cualquiera puede leer el código.")],
-  feat_lid_toggle="También con la tapa cerrada", priv_badges=["MIT", "Sin cuenta", "Sin internet"],
+  needs_chip="te espera", feat_lid_toggle="También con la tapa cerrada", priv_badges=["MIT", "Sin cuenta", "Sin internet"],
   inst_title="Empieza en un minuto",
   inst_steps=[("Descárgala", f'<a href="{ZIP}">Wick.zip</a>, descomprímela y arrastra Wick a Aplicaciones.'),
               ("Ábrela", "La primera vez macOS te pide confirmarlo: <b>Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente</b>."),
@@ -192,7 +192,8 @@ def feature_visual(key, t):
         cells = "".join(f'<span title="{n}">{logo(l)}</span>' for n, l in AGENTS if l)
         return f'<div class="fv logos">{cells}<span class="more">+5</span></div>'
     if key == "needs":
-        return f'<div class="fv needs"><span class="tray big-tray">{tray("waiting")}</span><span class="ping"></span></div>'
+        return (f'<div class="fv needs"><div class="sprite waiting"></div>'
+                f'<span class="needs-chip"><span class="dot waiting">●</span>{t["needs_chip"]}</span></div>')
     if key == "lid":
         return (f'<div class="fv lid"><div class="toggle-row"><span>{t["feat_lid_toggle"]}</span>'
                 f'<span class="switch on" aria-hidden="true"></span></div></div>')
@@ -210,10 +211,14 @@ def page(t):
     segs = [("working", 18), ("waiting", 2), ("working", 21), ("grace", 2), ("sleep", 7)]
     tl_bar = "".join(f'<span class="seg {k}" style="flex:{w}"></span>' for k, w in segs)
     tl_items = ""
-    for tm, k, title, text in t["tl"]:
+    for tm, k, title, agent, mac in t["tl"]:
         mood = "resting" if k in ("sleep", "grace") else k
-        tl_items += (f'<li class="{k}"><span class="time">{tm}</span>{tray(mood)}<b>{title}</b><p>{text}</p>'
-                     f'<span class="mac-chip {k}">{t["tl_mac"]}: {t["tl_states"][k]}</span></li>')
+        mac_on = "on" if k in ("working", "grace") else "off"
+        agent_cls = {"working": "busy", "waiting": "asks", "grace": "done", "sleep": "done"}[k]
+        tl_items += (f'<li class="{k}"><span class="time">{tm}</span><div class="sprite {mood} tl-wick"></div>'
+                     f'<b>{title}</b><dl>'
+                     f'<div><dt>{t["tl_agent"]}</dt><dd class="{agent_cls}">{agent}</dd></div>'
+                     f'<div><dt>{t["tl_mac"]}</dt><dd class="mac {mac_on}">{mac}</dd></div></dl></li>')
     feats = "".join(f'<article class="card feat">{feature_visual(k, t)}<h3>{h}</h3><p>{p}</p></article>' for k, h, p in t["feats"])
     hreflang = f'<link rel="alternate" hreflang="en" href="{DOMAIN}/">\n<link rel="alternate" hreflang="es" href="{DOMAIN}/es/">\n<link rel="alternate" hreflang="x-default" href="{DOMAIN}/">'
     demo_json = json.dumps(t["demo"], ensure_ascii=False)
