@@ -16,7 +16,7 @@
     }
   ],
   "redirects": [
-    { "source": "/download", "destination": "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip", "permanent": false },
-    { "source": "/github", "destination": "https://github.com/CometaLabs/wick", "permanent": false }
+    { "source": "/download/", "destination": "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip", "permanent": false },
+    { "source": "/github/", "destination": "https://github.com/CometaLabs/wick", "permanent": false }
   ]
 }
