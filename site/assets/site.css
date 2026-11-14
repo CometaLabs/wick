@@ -326,3 +326,11 @@ footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
 .fv.needs .sprite { --s: 130px; margin: 6px -10px 0 -14px; }
 .needs-chip { display: inline-flex; align-items: center; gap: 6px; font: 500 12px/1 var(--mono); padding: 7px 10px; border-radius: 8px; background: #fff; border: 1px solid var(--warm-line); color: var(--clay-dark); white-space: nowrap; }
 .tl-wick { --s: 76px; margin: -10px 0 -12px -12px; }
+
+/* velita de la barra de menú (tira de 24 frames, 35×44 px @2x) */
+.mb-wick { display: block; width: 17.5px; height: 22px; background-repeat: no-repeat; background-size: calc(17.5px * 24) 22px; background-image: url("mb-working.webp"); animation: mb 2s steps(24) infinite; }
+.mb-wick[data-mood="waiting"] { background-image: url("mb-waiting.webp"); }
+.mb-wick[data-mood="resting"] { background-image: url("mb-resting.webp"); animation-duration: 2.6s; }
+@keyframes mb { to { background-position: calc(17.5px * -24) 0; } }
+.menubar .tray { width: auto; padding: 0 6px; height: 26px; background: rgba(0,0,0,.08); }
+@media (prefers-reduced-motion: reduce) { .mb-wick { animation: none; } }

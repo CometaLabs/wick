@@ -135,3 +135,28 @@ enum Mascot: String {
         return list
     }
 }
+
+/// Velita de la barra de menú: tiras WebP recortadas a 22 pt de alto (Resources/menubar/<estado>.webp).
+/// Si faltan, la app usa el icono vectorial de MenuIcon.
+enum MenuBarMascot {
+    private static var cache: [Mascot: [NSImage]] = [:]
+
+    static func frames(_ mood: Mascot) -> [NSImage] {
+        if let cached = cache[mood] { return cached }
+        let resources = ProcessInfo.processInfo.environment["WICK_RESOURCES"].map { URL(fileURLWithPath: $0) }
+            ?? Bundle.main.resourceURL
+        guard let url = resources?.appendingPathComponent("menubar/\(mood.rawValue).webp"),
+              let source = CGImageSourceCreateWithURL(url as CFURL, nil),
+              let strip = CGImageSourceCreateImageAtIndex(source, 0, nil) else { return [] }
+        let width = strip.width / Mascot.frameCount
+        var list: [NSImage] = []
+        for i in 0..<Mascot.frameCount {
+            guard let frame = strip.cropping(to: CGRect(x: i * width, y: 0, width: width, height: strip.height)) else { break }
+            let image = NSImage(cgImage: frame, size: NSSize(width: CGFloat(width) / 2, height: CGFloat(strip.height) / 2))
+            image.accessibilityDescription = "Wick"
+            list.append(image)
+        }
+        cache[mood] = list
+        return list
+    }
+}

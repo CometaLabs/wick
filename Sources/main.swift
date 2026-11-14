@@ -56,6 +56,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var graceUntil = Date.distantPast
     private var manualActive = false
     private var manualEnd: Date?
+    private var manualStart = Date()
     private var lowBattery = false
     private var lastBatteryCheck = Date.distantPast
     private var sleepStuck = false
@@ -77,6 +78,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private var iconFrame = 0
     private var blinkCountdown = 18
     private var lastIcon: MenuIcon.Mode?
+    private var lastMood: Mascot?
+    private var iconTick = 0
 
     // MARK: arranque
 
@@ -101,7 +104,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         tick()
         let timer = Timer(timeInterval: 1, target: self, selector: #selector(tick), userInfo: nil, repeats: true)
         RunLoop.main.add(timer, forMode: .common)
-        let anim = Timer(timeInterval: 0.18, target: self, selector: #selector(animateIcon), userInfo: nil, repeats: true)
+        let anim = Timer(timeInterval: 0.1, target: self, selector: #selector(animateIcon), userInfo: nil, repeats: true)
         RunLoop.main.add(anim, forMode: .common)
 
         // Abierta desde Descargas sin mover, macOS la ejecuta desde una ruta temporal:
@@ -176,6 +179,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     @objc private func animateIcon() {
+        // La velita de verdad, animada; si no están las tiras, el icono vectorial.
+        let mood: Mascot = !waiting.isEmpty ? .esperando : (!working.isEmpty || manualActive) ? .trabajando : .descansando
+        let frames = MenuBarMascot.frames(mood)
+        if !frames.isEmpty {
+            if mood != lastMood { lastMood = mood; iconFrame = 0 }
+            // descansando va más despacio, como una respiración
+            iconTick += 1
+            if mood != .descansando || iconTick % 2 == 0 { iconFrame = (iconFrame + 1) % frames.count }
+            statusItem.button?.image = frames[iconFrame]
+            return
+        }
         let mode: MenuIcon.Mode
         blinkCountdown -= 1
         let blink = blinkCountdown <= 0
@@ -199,8 +213,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func updateButtonText() {
         var text = ""
-        if manualActive, let end = manualEnd {
-            text = " " + Self.clock(end.timeIntervalSinceNow)
+        if manualActive {
+            text = " " + (manualEnd.map { Self.short($0.timeIntervalSinceNow) } ?? "∞")
         } else if waiting.count > 1 {
             text = " \(waiting.count)"
         }
@@ -232,9 +246,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return MenuSnapshot(mascot: .trabajando, title: L("Trabajando", "Working"), subtitle: "\(what)\n\(awakeNote)")
         }
         if manualActive {
-            let left = manualEnd.map { L("Quedan \(Self.clock($0.timeIntervalSinceNow)).", "\(Self.clock($0.timeIntervalSinceNow)) left.") }
-                ?? L("Hasta que la pares.", "Until you stop it.")
-            return MenuSnapshot(mascot: .trabajando, title: L("Despierta", "Awake"), subtitle: "\(left)\n\(awakeNote)")
+            guard let end = manualEnd else {
+                return MenuSnapshot(mascot: .trabajando, title: L("Despierta a mano", "Awake by hand"),
+                                    subtitle: L("Hasta que la apagues.", "Until you blow it out.") + "\n\(awakeNote)")
+            }
+            let total = max(1, end.timeIntervalSince(manualStart))
+            let left = end.timeIntervalSinceNow
+            let until = DateFormatter.localizedString(from: end, dateStyle: .none, timeStyle: .short)
+            return MenuSnapshot(mascot: .trabajando,
+                                title: L("Quedan \(Self.long(left))", "\(Self.long(left)) left"),
+                                subtitle: L("Despierta hasta las \(until).", "Awake until \(until)."),
+                                progress: left / total)
         }
         if Date() < graceUntil {
             return MenuSnapshot(mascot: .descansando, title: L("Acaba de terminar", "Just finished"),
@@ -324,6 +346,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         manual.submenu = sub
         menu.addItem(manual)
         if manualActive {
+            if manualEnd != nil { menu.addItem(item(L("Añadir 30 minutos", "Add 30 minutes"), #selector(addHalfHour))) }
             menu.addItem(item(L("Apagar la llama", "Blow out the flame"), #selector(stopManual)))
         }
 
@@ -452,7 +475,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc private func startManual(_ sender: NSMenuItem) {
         guard manualOptions.indices.contains(sender.tag) else { return }
         manualActive = true
+        manualStart = Date()
         manualEnd = manualOptions[sender.tag].seconds.map { Date().addingTimeInterval($0) }
+        tick()
+    }
+
+    @objc private func addHalfHour() {
+        guard let end = manualEnd else { return }
+        manualEnd = end.addingTimeInterval(30 * 60)
         tick()
     }
 
@@ -490,10 +520,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     // MARK: formato
 
-    static func clock(_ seconds: TimeInterval) -> String {
-        let s = max(0, Int(seconds.rounded()))
-        let h = s / 3600, m = (s % 3600) / 60, sec = s % 60
-        return h > 0 ? String(format: "%d:%02d:%02d", h, m, sec) : String(format: "%d:%02d", m, sec)
+    /// Para la barra de menú: «3 h 59 min», «12 min», «45 s».
+    static func short(_ seconds: TimeInterval) -> String {
+        let s = max(0, Int(seconds.rounded(.up)))
+        if s < 60 { return "\(s) s" }
+        let m = (s + 59) / 60
+        if m < 60 { return "\(m) min" }
+        return m % 60 == 0 ? "\(m / 60) h" : "\(m / 60) h \(m % 60) min"
+    }
+
+    /// Para la cabecera del menú: «3 h 59 min», «12 min», «45 segundos».
+    static func long(_ seconds: TimeInterval) -> String {
+        let s = max(0, Int(seconds.rounded(.up)))
+        return s < 60 ? L("\(s) segundos", "\(s) seconds") : short(seconds)
     }
 
     static func ago(_ seconds: TimeInterval) -> String {

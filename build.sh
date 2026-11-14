@@ -11,6 +11,7 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp Info.plist "$APP/Contents/Info.plist"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 cp -R Resources/mascot "$APP/Contents/Resources/mascot"
+cp -R Resources/menubar "$APP/Contents/Resources/menubar"
 
 TMP="$(mktemp -d)"
 swiftc -Osize -target arm64-apple-macos13 Sources/*.swift -o "$TMP/arm64"

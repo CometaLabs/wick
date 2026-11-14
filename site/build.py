@@ -3,12 +3,12 @@
 import json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V = "14"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
+V = "15"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
 DOMAIN = "https://wick.cometalabs.io"
 ZIP = "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip"
 REPO = "https://github.com/CometaLabs/wick"
 LOGOS = os.path.join(os.path.dirname(HERE), "art", "logos")
-SIZE = "1.4 MB"
+SIZE = "1.5 MB"
 # (nombre, logo en art/logos o None). Logos monocromos de simple-icons y lobe-icons.
 AGENTS = [("Claude Code", "claude"), ("Codex", "codex"), ("Gemini CLI", "gemini"), ("Cursor Agent", "cursor"),
           ("Copilot CLI", "copilot"), ("Qwen Code", "qwen"), ("Goose", "goose"), ("OpenCode", None), ("Aider", None),
@@ -36,7 +36,7 @@ T = {
   h1='Your agents work.<br>Your Mac <em>stays awake.</em>',
   lead="Wick is a free app for your menu bar. When Claude Code, Codex or another AI agent starts working, it keeps your Mac awake. When the work is done, it lets it sleep. You don't have to do a thing.",
   cta_dl="Download for macOS", cta_gh="View on GitHub",
-  mono="v1.0.1 · macOS 13+ · Apple Silicon &amp; Intel",
+  mono="v1.0.2 · macOS 13+ · Apple Silicon &amp; Intel",
   works_short="Works with", hand="lights up on its own", demo_label="Live demo: Wick follows an agent in the terminal",
   clock="Fri 10:42", agents_label="Agents", opt_hooks="Claude Code (hooks)", opt_others="Other agents (Codex, Gemini…)", opt_lid="Also with the lid closed",
   pb_title="The problem", pb_intro="You leave an agent on a long task and go for a coffee. A few minutes later the Mac falls asleep, and the agent stops with it.",
@@ -97,7 +97,7 @@ T = {
   h1='Tus agentes trabajan.<br>Tu Mac <em>no se duerme.</em>',
   lead="Wick es una app gratuita para la barra de menú. Cuando Claude Code, Codex u otro agente de IA se pone a trabajar, mantiene tu Mac despierto. Cuando termina, lo deja dormir. Tú no tienes que hacer nada.",
   cta_dl="Descargar para macOS", cta_gh="Ver en GitHub",
-  mono="v1.0.1 · macOS 13+ · Apple Silicon e Intel",
+  mono="v1.0.2 · macOS 13+ · Apple Silicon e Intel",
   works_short="Funciona con", hand="se enciende sola", demo_label="Demo en vivo: Wick sigue a un agente en la terminal",
   clock="vie 10:42", agents_label="Agentes", opt_hooks="Claude Code (hooks)", opt_others="Otros agentes (Codex, Gemini…)", opt_lid="También con la tapa cerrada",
   pb_title="El problema", pb_intro="Dejas a un agente con una tarea larga y te vas a por un café. A los pocos minutos el Mac se duerme, y el agente se para con él.",
@@ -172,7 +172,7 @@ def ld(t):
         {"@type": "SoftwareApplication", "@id": DOMAIN + "/#app", "name": "Wick", "url": url,
          "description": t["desc"], "image": DOMAIN + "/assets/wick-icon-512.png", "screenshot": DOMAIN + "/og.png",
          "applicationCategory": "DeveloperApplication", "operatingSystem": "macOS 13+",
-         "softwareVersion": "1.0.1", "fileSize": SIZE, "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": True,
+         "softwareVersion": "1.0.2", "fileSize": SIZE, "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": True,
          "downloadUrl": ZIP, "codeRepository": REPO, "inLanguage": ["en", "es"],
          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
          "author": {"@id": "https://cometalabs.io/#organization"}, "publisher": {"@id": "https://cometalabs.io/#organization"}},
@@ -302,7 +302,7 @@ def page(t):
         <div class="menubar">
           <span class="apple">{APPLE}</span><b>Terminal</b><span class="dim-item">Shell</span><span class="dim-item">Edit</span><span class="dim-item">View</span>
           <span class="spacer"></span>
-          <span class="tray">{TRAY}</span>
+          <span class="tray"><span class="mb-wick" data-icon data-mood="working"></span></span>
           <span class="dim-item">{t['clock']}</span>
         </div>
         <p class="hand" aria-hidden="true">{t['hand']}<svg viewBox="0 0 80 50" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 40c18 2 44-4 62-30"/><path d="M54 10l12 0 2 12"/></svg></p>

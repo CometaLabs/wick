@@ -4,6 +4,8 @@ struct MenuSnapshot {
     let mascot: Mascot
     let title: String
     let subtitle: String
+    /// 0…1 para el modo manual con tiempo; nil si no hay temporizador.
+    var progress: Double? = nil
 }
 
 // MARK: - Cabecera del menú: mascota animada + estado
@@ -12,6 +14,8 @@ final class HeaderView: NSView {
     private let imageView = NSImageView()
     private let title = NSTextField(labelWithString: "")
     private let subtitle = NSTextField(labelWithString: "")
+    private let track = NSView()
+    private let fill = NSView()
     private var mascot: Mascot = .descansando
     private var frameIndex = 0
     private var timer: Timer?
@@ -33,6 +37,18 @@ final class HeaderView: NSView {
         subtitle.frame = NSRect(x: 130, y: 20, width: 162, height: 48)
         subtitle.cell?.wraps = true
         addSubview(subtitle)
+
+        // barra de progreso del temporizador (se ve solo en modo manual)
+        track.frame = NSRect(x: 132, y: 16, width: 156, height: 6)
+        track.wantsLayer = true
+        track.layer?.cornerRadius = 3
+        track.layer?.backgroundColor = NSColor.quaternaryLabelColor.cgColor
+        fill.wantsLayer = true
+        fill.layer?.cornerRadius = 3
+        fill.layer?.backgroundColor = NSColor(srgbRed: 1, green: 0.55, blue: 0.12, alpha: 1).cgColor
+        track.addSubview(fill)
+        track.isHidden = true
+        addSubview(track)
     }
 
     required init?(coder: NSCoder) { fatalError() }
@@ -40,6 +56,14 @@ final class HeaderView: NSView {
     func update(_ s: MenuSnapshot) {
         title.stringValue = s.title
         subtitle.stringValue = s.subtitle
+        if let progress = s.progress {
+            track.isHidden = false
+            fill.frame = NSRect(x: 0, y: 0, width: max(6, track.bounds.width * CGFloat(min(1, max(0, progress)))), height: 6)
+            subtitle.frame = NSRect(x: 130, y: 28, width: 162, height: 40)
+        } else {
+            track.isHidden = true
+            subtitle.frame = NSRect(x: 130, y: 20, width: 162, height: 48)
+        }
         if s.mascot != mascot {
             mascot = s.mascot
             frameIndex = 0
