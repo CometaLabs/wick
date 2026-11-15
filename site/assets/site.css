@@ -9,7 +9,7 @@
   --well: #f3eee6;
   --ink: #211c18;
   --ink-2: #4b4139;
-  --muted: #7d6e60;
+  --muted: #6f6153;
   --line: #e3d8c8;
   --clay: #c8794c;
   --clay-dark: #9c5634;
@@ -116,7 +116,7 @@ h1 em { font-style: normal; color: var(--clay); }
 .terminal .lines { padding: 18px 20px 22px; font: 13.5px/1.75 var(--mono); min-height: 150px; }
 .lines .dim { color: #9a8b7d; }
 .lines .accent { color: var(--clay-dark); font-weight: 500; }
-.lines .ok { color: #3f8a3a; font-weight: 500; }
+.lines .ok { color: #367a32; font-weight: 500; }
 .lines div { white-space: pre; overflow: hidden; text-overflow: ellipsis; animation: line-in .35s ease both; }
 .lines div:nth-child(2) { animation-delay: .08s; } .lines div:nth-child(3) { animation-delay: .16s; } .lines div:nth-child(4) { animation-delay: .24s; }
 @keyframes line-in { from { opacity: 0; transform: translateY(3px); } }
@@ -162,9 +162,9 @@ h2 { font-weight: 600; font-size: clamp(34px, 4.4vw, 54px); line-height: 1.02; l
 .vs-screen { position: relative; height: 200px; border-radius: 14px; border: 1px solid var(--line); background: #fff; padding: 22px; margin-bottom: 20px; overflow: hidden; }
 .vs.without .vs-screen { background: #2a2622; border-color: #2a2622; }
 .vs-task { display: flex; justify-content: space-between; gap: 12px; font: 13px/1.4 var(--mono); color: var(--ink-2); }
-.vs.without .vs-task { color: #8f8478; }
+.vs.without .vs-task { color: #a0958a; }
 .vs-task b { font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
-.vs-task b.ok { color: #3f8a3a; }
+.vs-task b.ok { color: #367a32; }
 .vs-task b svg { width: 15px; height: 15px; }
 .vs-bar { height: 8px; border-radius: 999px; background: var(--well); margin-top: 14px; overflow: hidden; }
 .vs.without .vs-bar { background: #3a342f; }

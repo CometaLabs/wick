@@ -3,7 +3,7 @@
 import json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V = "15"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
+V = "16"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
 DOMAIN = "https://wick.cometalabs.io"
 ZIP = "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip"
 REPO = "https://github.com/CometaLabs/wick"
@@ -238,10 +238,10 @@ def page(t):
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/Roobert-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/wick-working.webp" as="image" fetchpriority="high">
+<link rel="preload" href="/assets/fonts/Roobert-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"></noscript>
 <link rel="stylesheet" href="/assets/site.css?v={V}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Wick by Cometa Labs">
