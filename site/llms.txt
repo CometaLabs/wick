@@ -4,8 +4,8 @@
 
 - Website: https://wick.cometalabs.io (Spanish: https://wick.cometalabs.io/es/)
 - Source code (MIT): https://github.com/CometaLabs/wick
-- Download: https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip
-- Requirements: macOS 13 or later, Apple Silicon or Intel. About 1.5 MB. Not signed with an Apple Developer ID yet (open via System Settings → Privacy & Security → Open Anyway).
+- Download: https://github.com/CometaLabs/wick/releases/latest/download/Wick.dmg
+- Requirements: macOS 13 or later, Apple Silicon or Intel. About 1.5 MB. Distributed as Wick.dmg, signed with Cometa Labs' Developer ID (notarization pending: the first time, System Settings → Privacy & Security → Open Anyway).
 
 ## What it does
 

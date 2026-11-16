@@ -42,14 +42,10 @@ Si el Mac se duerme a mitad de una tarea larga, el agente se para. Con las apps 
 
 ## Instalar
 
-1. Descarga `Wick.zip` de la [última versión](../../releases/latest), descomprímela y arrastra **Wick.app** a **Aplicaciones**.
-2. Ábrela. Todavía no está firmada con un Developer ID de Apple, así que macOS avisa la primera vez: pulsa **Hecho**, ve a **Ajustes del Sistema → Privacidad y seguridad** y pulsa **Abrir igualmente**. O en la terminal:
-
-   ```sh
-   xattr -dr com.apple.quarantine /Applications/Wick.app
-   ```
-
-3. Si usas Claude Code, Wick te ofrece añadir sus hooks para seguirlo al detalle. Los demás agentes funcionan desde el primer momento.
+1. Descarga **Wick.dmg** desde la [última versión](../../releases/latest) o [wick.cometalabs.io](https://wick.cometalabs.io/es/), ábrelo y arrastra la velita a **Aplicaciones**.
+2. Abre Wick desde Aplicaciones. Está firmada con el Developer ID de Cometa Labs; hasta que Apple termine la notarización, la primera vez ve a **Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente**.
+3. Wick no tiene ventana: busca la velita en tu barra de menú, arriba a la derecha. Si la barra está llena, macOS la esconde detrás de la cámara; mantén pulsada ⌘ y arrastra otros iconos para hacerle sitio.
+4. Si usas Claude Code, acepta los hooks para seguirlo al detalle. Los demás agentes funcionan al momento.
 
 ### Qué cambia en tu configuración
 
@@ -87,7 +83,7 @@ Necesitas macOS 13 o posterior y las Command Line Tools (`xcode-select --install
 
 ```sh
 ./build.sh          # Wick.app universal (Apple Silicon + Intel)
-./build.sh --zip    # además Wick.zip para publicar una versión
+./build.sh --dmg    # además Wick.dmg (firmado si hay un Developer ID en el llavero)
 ```
 
 Swift, sin dependencias. La mascota se renderiza en Blender (`art/wick.py`, tres estados × 24 frames) y se posprocesa con Python (`art/post.py`, `art/banner.py`). Los frames ya están en `Resources/mascot/`, así que no hace falta Blender para compilar. La web está en `site/`.

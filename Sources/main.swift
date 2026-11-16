@@ -107,19 +107,85 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let anim = Timer(timeInterval: 0.1, target: self, selector: #selector(animateIcon), userInfo: nil, repeats: true)
         RunLoop.main.add(anim, forMode: .common)
 
-        // Abierta desde Descargas sin mover, macOS la ejecuta desde una ruta temporal:
-        // los hooks apuntarían a una carpeta que desaparece al reiniciar.
-        if Bundle.main.bundlePath.contains("/AppTranslocation/") {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { self.warnTranslocated() }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { self.firstRun() }
+    }
+
+    // MARK: primer arranque
+
+    private var isInApplications: Bool {
+        let path = Bundle.main.bundlePath
+        return path.hasPrefix("/Applications/") || path.hasPrefix(WickPaths.home.path + "/Applications/")
+    }
+
+    /// 1) Si no está en Aplicaciones, se ofrece a moverse (abierta desde Descargas o desde el .dmg,
+    ///    los hooks apuntarían a una ruta que desaparece). 2) La primera vez explica dónde vive,
+    ///    ofrece los hooks de Claude Code y abre su menú para que se vea en la barra.
+    private func firstRun() {
+        if !isInApplications && !UserDefaults.standard.bool(forKey: "skipMoveToApplications") {
+            if offerMoveToApplications() { return }
+        }
+        guard !UserDefaults.standard.bool(forKey: "onboarded") else { return }
+        UserDefaults.standard.set(true, forKey: "onboarded")
+        showWelcome()
+        let usesClaude = FileManager.default.fileExists(atPath: WickPaths.home.appendingPathComponent(".claude").path)
+        if !hooksInstalled && usesClaude { offerHooks() }
+        statusItem.button?.performClick(nil)
+    }
+
+    /// Devuelve true si se ha movido y se está relanzando desde Aplicaciones.
+    private func offerMoveToApplications() -> Bool {
+        let alert = NSAlert()
+        alert.messageText = L("¿Muevo Wick a Aplicaciones?", "Move Wick to Applications?")
+        alert.informativeText = L("Así sigue funcionando después de reiniciar y la tienes siempre a mano.",
+                                  "That way it keeps working after a restart and is always at hand.")
+        alert.addButton(withTitle: L("Mover a Aplicaciones", "Move to Applications"))
+        alert.addButton(withTitle: L("Ahora no", "Not now"))
+        alert.icon = NSApp.applicationIconImage
+        NSApp.activate(ignoringOtherApps: true)
+        guard alert.runModal() == .alertFirstButtonReturn else {
+            UserDefaults.standard.set(true, forKey: "skipMoveToApplications")
+            return false
         }
 
-        if !UserDefaults.standard.bool(forKey: "onboarded") {
-            UserDefaults.standard.set(true, forKey: "onboarded")
-            let usesClaude = FileManager.default.fileExists(atPath: WickPaths.home.appendingPathComponent(".claude").path)
-            if !hooksInstalled && usesClaude {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { self.offerHooks() }
+        let fm = FileManager.default
+        let source = URL(fileURLWithPath: Bundle.main.bundlePath)
+        let destination = URL(fileURLWithPath: "/Applications/Wick.app")
+        do {
+            // Si ya hay una copia (otra versión), se cierra y va a la Papelera.
+            for app in NSRunningApplication.runningApplications(withBundleIdentifier: Bundle.main.bundleIdentifier ?? "")
+            where app.processIdentifier != ProcessInfo.processInfo.processIdentifier {
+                app.terminate()
             }
+            if fm.fileExists(atPath: destination.path) {
+                try fm.trashItem(at: destination, resultingItemURL: nil)
+            }
+            try fm.copyItem(at: source, to: destination)
+        } catch {
+            let fail = NSAlert()
+            fail.messageText = L("No he podido moverla", "Couldn't move it")
+            fail.informativeText = L("Arrastra Wick a la carpeta Aplicaciones desde el Finder y ábrela desde ahí.",
+                                     "Drag Wick into the Applications folder in Finder and open it from there.")
+            fail.runModal()
+            return false
         }
+        let open = Process()
+        open.executableURL = URL(fileURLWithPath: "/usr/bin/open")
+        open.arguments = ["-n", destination.path]
+        try? open.run()
+        NSApp.terminate(nil)
+        return true
+    }
+
+    private func showWelcome() {
+        let alert = NSAlert()
+        alert.messageText = L("Wick ya está en tu barra de menú", "Wick is now in your menu bar")
+        alert.informativeText = L(
+            "Busca la velita arriba a la derecha, junto al reloj. Se enciende sola cuando un agente se pone a trabajar.\n\nSi no la ves, tu barra está llena y macOS la esconde detrás de la cámara: mantén pulsada ⌘ y arrastra otros iconos para hacerle sitio.",
+            "Look for the little candle at the top right, next to the clock. It lights up on its own when an agent starts working.\n\nIf you can't see it, your menu bar is full and macOS hides it behind the camera: hold ⌘ and drag other icons to make room.")
+        alert.addButton(withTitle: L("Entendido", "Got it"))
+        alert.icon = NSApp.applicationIconImage
+        NSApp.activate(ignoringOtherApps: true)
+        alert.runModal()
     }
 
     func applicationWillTerminate(_ notification: Notification) {
@@ -402,16 +468,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
 
     // MARK: acciones
-
-    private func warnTranslocated() {
-        let alert = NSAlert()
-        alert.messageText = L("Mueve Wick a Aplicaciones", "Move Wick to Applications")
-        alert.informativeText = L("macOS la está abriendo desde una carpeta temporal. Arrástrala a Aplicaciones y ábrela desde ahí para que funcione tras reiniciar.",
-                                  "macOS is running it from a temporary folder. Drag it into Applications and open it from there so it keeps working after a restart.")
-        alert.icon = NSApp.applicationIconImage
-        NSApp.activate(ignoringOtherApps: true)
-        alert.runModal()
-    }
 
     private func offerHooks() {
         let alert = NSAlert()

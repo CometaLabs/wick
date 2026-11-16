@@ -42,14 +42,10 @@ If your Mac sleeps halfway through a long run, the agent stops. With a classic k
 
 ## Install
 
-1. Download `Wick.zip` from the [latest release](../../releases/latest), unzip it and drag **Wick.app** into **Applications**.
-2. Open it. Wick isn't signed with an Apple Developer ID yet, so macOS warns you the first time: click **Done**, open **System Settings → Privacy & Security** and click **Open Anyway**. Or in Terminal:
-
-   ```sh
-   xattr -dr com.apple.quarantine /Applications/Wick.app
-   ```
-
-3. If you use Claude Code, Wick offers to add its hooks for exact tracking. Other agents work right away.
+1. Download **Wick.dmg** from the [latest release](../../releases/latest) or [wick.cometalabs.io](https://wick.cometalabs.io), open it and drag the candle into **Applications**.
+2. Open Wick from Applications. It's signed with Cometa Labs' Developer ID; until Apple's notarization is done, the first time go to **System Settings → Privacy & Security → Open Anyway**.
+3. Wick has no window: look for the candle in your menu bar, at the top right. If your menu bar is full, macOS hides it behind the camera notch; hold ⌘ and drag other icons to make room.
+4. If you use Claude Code, accept the hooks for exact tracking. Other agents work right away.
 
 ### What it changes in your setup
 
@@ -87,7 +83,7 @@ Needs macOS 13+ and the Command Line Tools (`xcode-select --install`).
 
 ```sh
 ./build.sh          # universal Wick.app (Apple Silicon + Intel)
-./build.sh --zip    # also Wick.zip for a release
+./build.sh --dmg    # also Wick.dmg (signed if a Developer ID is in the keychain)
 ```
 
 Swift, no dependencies. The mascot is rendered in Blender (`art/wick.py`, three moods × 24 frames) and post-processed with Python (`art/post.py`, `art/banner.py`). The frames are already in `Resources/mascot/`, so you don't need Blender to build. The website lives in `site/`.

@@ -3,9 +3,9 @@
 import json, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-V = "16"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
+V = "17"  # súbelo al cambiar CSS/JS (los assets llevan caché inmutable)
 DOMAIN = "https://wick.cometalabs.io"
-ZIP = "https://github.com/CometaLabs/wick/releases/latest/download/Wick.zip"
+ZIP = "https://github.com/CometaLabs/wick/releases/latest/download/Wick.dmg"
 REPO = "https://github.com/CometaLabs/wick"
 LOGOS = os.path.join(os.path.dirname(HERE), "art", "logos")
 SIZE = "1.5 MB"
@@ -36,7 +36,7 @@ T = {
   h1='Your agents work.<br>Your Mac <em>stays awake.</em>',
   lead="Wick is a free app for your menu bar. When Claude Code, Codex or another AI agent starts working, it keeps your Mac awake. When the work is done, it lets it sleep. You don't have to do a thing.",
   cta_dl="Download for macOS", cta_gh="View on GitHub",
-  mono="v1.0.2 · macOS 13+ · Apple Silicon &amp; Intel",
+  mono="v1.0.3 · macOS 13+ · Apple Silicon &amp; Intel",
   works_short="Works with", hand="lights up on its own", demo_label="Live demo: Wick follows an agent in the terminal",
   clock="Fri 10:42", agents_label="Agents", opt_hooks="Claude Code (hooks)", opt_others="Other agents (Codex, Gemini…)", opt_lid="Also with the lid closed",
   pb_title="The problem", pb_intro="You leave an agent on a long task and go for a coffee. A few minutes later the Mac falls asleep, and the agent stops with it.",
@@ -59,14 +59,15 @@ T = {
          ("private", "Free and private", "No account, no internet, no tracking. Open source, so anyone can read the code.")],
   needs_chip="needs you", feat_lid_toggle="Also with the lid closed", priv_badges=["MIT", "No account", "Offline"],
   inst_title="Start in one minute",
-  inst_steps=[("Download", f'<a href="{ZIP}">Wick.zip</a>, unzip it and drag Wick into Applications.'),
-              ("Open it", "The first time, macOS asks you to confirm: <b>System Settings → Privacy &amp; Security → Open Anyway</b>."),
-              ("Forget about it", "If you use Claude Code, accept the connection. From then on, Wick lights up on its own.")],
+  inst_steps=[("Download", f'Open <a href="{ZIP}">Wick.dmg</a> and drag the candle into the <b>Applications</b> folder.'),
+              ("Open it", "Open Wick from Applications. If macOS asks, go to <b>System Settings → Privacy &amp; Security → Open Anyway</b>."),
+              ("Look up", "Wick has no window: the candle appears in your menu bar, at the top right. If you use Claude Code, accept the connection.")],
   inst_term="Prefer the terminal?", inst_copy="Copy", inst_copied="Copied", inst_uninstall="To remove the Claude Code hooks before deleting the app:",
   faq_title="Questions",
-  faq=[("Does it only work with Claude Code?", "No. With Claude Code it uses hooks, so it knows exactly when the agent works and when it needs you. Codex, Gemini CLI, Cursor Agent, OpenCode, Aider, Amp, Goose and other terminal agents are noticed from their activity: if they're using the processor, they're working."),
+  faq=[("I opened it and nothing happened. Where is it?", "Wick has no window or Dock icon: it lives in the menu bar, as a little candle at the top right next to the clock. If your menu bar is full, macOS hides it behind the camera notch: hold ⌘ and drag other icons to make room."),
+       ("Does it only work with Claude Code?", "No. With Claude Code it uses hooks, so it knows exactly when the agent works and when it needs you. Codex, Gemini CLI, Cursor Agent, OpenCode, Aider, Amp, Goose and other terminal agents are noticed from their activity: if they're using the processor, they're working."),
        ("Does it work on Windows or Linux?", "Not yet. Wick is a Mac app (macOS 13 or later, Apple Silicon and Intel)."),
-       ("Why does macOS warn me when I open it?", "Wick isn't signed with an Apple Developer ID yet. Open it once, then go to System Settings → Privacy & Security and click Open Anyway. Or run xattr -dr com.apple.quarantine /Applications/Wick.app."),
+       ("Why does macOS warn me when I open it?", "Wick is signed by Cometa Labs, but Apple's notarization is still on its way. Until then, the first time go to System Settings → Privacy & Security and click Open Anyway."),
        ("Why does it ask for my password?", "Only if you turn on the lid-closed mode. macOS doesn't let a normal app stop the Mac from sleeping when you close the lid, so Wick needs permission once. It never asks otherwise."),
        ("Is the lid-closed mode safe?", "Normal sleep comes back when the agent finishes, when you quit Wick, if it crashes, or below 15% battery. Leave the Mac somewhere it can breathe: a closed laptop in a bag gets warm."),
        ("What does it change on my computer?", "For Claude Code it adds a few hooks to ~/.claude/settings.json (after backing it up). They only tell Wick what's happening and never change what Claude does. You can remove them from the menu."),
@@ -97,7 +98,7 @@ T = {
   h1='Tus agentes trabajan.<br>Tu Mac <em>no se duerme.</em>',
   lead="Wick es una app gratuita para la barra de menú. Cuando Claude Code, Codex u otro agente de IA se pone a trabajar, mantiene tu Mac despierto. Cuando termina, lo deja dormir. Tú no tienes que hacer nada.",
   cta_dl="Descargar para macOS", cta_gh="Ver en GitHub",
-  mono="v1.0.2 · macOS 13+ · Apple Silicon e Intel",
+  mono="v1.0.3 · macOS 13+ · Apple Silicon e Intel",
   works_short="Funciona con", hand="se enciende sola", demo_label="Demo en vivo: Wick sigue a un agente en la terminal",
   clock="vie 10:42", agents_label="Agentes", opt_hooks="Claude Code (hooks)", opt_others="Otros agentes (Codex, Gemini…)", opt_lid="También con la tapa cerrada",
   pb_title="El problema", pb_intro="Dejas a un agente con una tarea larga y te vas a por un café. A los pocos minutos el Mac se duerme, y el agente se para con él.",
@@ -120,14 +121,15 @@ T = {
          ("private", "Gratis y privada", "Sin cuenta, sin internet, sin rastreo. Open source: cualquiera puede leer el código.")],
   needs_chip="te espera", feat_lid_toggle="También con la tapa cerrada", priv_badges=["MIT", "Sin cuenta", "Sin internet"],
   inst_title="Empieza en un minuto",
-  inst_steps=[("Descárgala", f'<a href="{ZIP}">Wick.zip</a>, descomprímela y arrastra Wick a Aplicaciones.'),
-              ("Ábrela", "La primera vez macOS te pide confirmarlo: <b>Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente</b>."),
-              ("Olvídate", "Si usas Claude Code, acepta la conexión. A partir de ahí, Wick se enciende sola.")],
+  inst_steps=[("Descárgala", f'Abre <a href="{ZIP}">Wick.dmg</a> y arrastra la velita a la carpeta <b>Aplicaciones</b>.'),
+              ("Ábrela", "Abre Wick desde Aplicaciones. Si macOS te lo pide, ve a <b>Ajustes del Sistema → Privacidad y seguridad → Abrir igualmente</b>."),
+              ("Mira arriba", "Wick no tiene ventana: la velita aparece en tu barra de menú, arriba a la derecha. Si usas Claude Code, acepta la conexión.")],
   inst_term="¿Prefieres la terminal?", inst_copy="Copiar", inst_copied="Copiado", inst_uninstall="Para quitar los hooks de Claude Code antes de borrar la app:",
   faq_title="Preguntas",
-  faq=[("¿Solo funciona con Claude Code?", "No. Con Claude Code usa hooks, así que sabe exactamente cuándo trabaja el agente y cuándo te necesita. Codex, Gemini CLI, Cursor Agent, OpenCode, Aider, Amp, Goose y otros agentes de terminal los nota por su actividad: si están usando el procesador, están trabajando."),
+  faq=[("La he abierto y no pasa nada. ¿Dónde está?", "Wick no tiene ventana ni icono en el Dock: vive en la barra de menú, como una velita arriba a la derecha, junto al reloj. Si tu barra está llena, macOS la esconde detrás de la cámara: mantén pulsada ⌘ y arrastra otros iconos para hacerle sitio."),
+       ("¿Solo funciona con Claude Code?", "No. Con Claude Code usa hooks, así que sabe exactamente cuándo trabaja el agente y cuándo te necesita. Codex, Gemini CLI, Cursor Agent, OpenCode, Aider, Amp, Goose y otros agentes de terminal los nota por su actividad: si están usando el procesador, están trabajando."),
        ("¿Funciona en Windows o Linux?", "Todavía no. Wick es una app para Mac (macOS 13 o posterior, Apple Silicon e Intel)."),
-       ("¿Por qué macOS me avisa al abrirla?", "Todavía no está firmada con un Developer ID de Apple. Ábrela una vez, ve a Ajustes del Sistema → Privacidad y seguridad y pulsa Abrir igualmente. O ejecuta xattr -dr com.apple.quarantine /Applications/Wick.app."),
+       ("¿Por qué macOS me avisa al abrirla?", "Wick está firmada por Cometa Labs, pero la notarización de Apple aún está en camino. Mientras, la primera vez ve a Ajustes del Sistema → Privacidad y seguridad y pulsa Abrir igualmente."),
        ("¿Por qué me pide la contraseña?", "Solo si activas el modo tapa cerrada. macOS no deja que una app normal evite el reposo al cerrar la tapa, así que Wick necesita permiso una vez. Para nada más."),
        ("¿Es seguro el modo tapa cerrada?", "El reposo normal vuelve cuando el agente termina, al salir de Wick, si se cuelga o con la batería por debajo del 15 %. Deja el Mac donde pueda respirar: un portátil cerrado en una mochila se calienta."),
        ("¿Qué cambia en mi ordenador?", "Para Claude Code añade unos hooks a ~/.claude/settings.json (antes guarda una copia). Solo le cuentan a Wick lo que pasa y nunca cambian lo que hace Claude. Puedes quitarlos desde el menú."),
@@ -172,7 +174,7 @@ def ld(t):
         {"@type": "SoftwareApplication", "@id": DOMAIN + "/#app", "name": "Wick", "url": url,
          "description": t["desc"], "image": DOMAIN + "/assets/wick-icon-512.png", "screenshot": DOMAIN + "/og.png",
          "applicationCategory": "DeveloperApplication", "operatingSystem": "macOS 13+",
-         "softwareVersion": "1.0.2", "fileSize": SIZE, "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": True,
+         "softwareVersion": "1.0.3", "fileSize": SIZE, "license": "https://opensource.org/licenses/MIT", "isAccessibleForFree": True,
          "downloadUrl": ZIP, "codeRepository": REPO, "inLanguage": ["en", "es"],
          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
          "author": {"@id": "https://cometalabs.io/#organization"}, "publisher": {"@id": "https://cometalabs.io/#organization"}},

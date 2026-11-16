@@ -6,3 +6,6 @@ art/test/
 .vercel/
 # Roobert es de pago: se sirve en la web pero no se redistribuye en el repo
 site/assets/fonts/
+.venv-dmg/
+Wick.dmg
+art/dmg/bg*.png
